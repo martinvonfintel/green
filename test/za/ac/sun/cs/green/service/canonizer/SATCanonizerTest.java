@@ -272,7 +272,7 @@ public class SATCanonizerTest {
 
 	@Test
 	public void test17() {
-		IntConstant c2 = new IntConstant(2);
+		IntConstant c1 = new IntConstant(2);
 		Operation o1 = new Operation(Operation.Operator.LT, c1, c1);
 		check(o1, "2<2", "0==1");
 	}

@@ -1,10 +1,18 @@
-language: java
-
-script:
- - ant;
- - ant test;
-
 sudo: required
 
+language: java
+
 services:
-  - docker
+	- docker
+
+before_install:
+	- docker build -t martinvonfintel/green .
+	- docker run -d -p 127.0.0.1:80:4567 martinvonfintel/green /bin/sh -c "cd
+	  /root/green; bundle exec foreman start;"
+	- docker ps -a
+	- docker run martinvonfintel/green /bin/sh -c "cd /root/green; bundle exec rake test"
+
+script:
+	- bundle exec rake test
+ 	- ant;
+ 	- ant test;

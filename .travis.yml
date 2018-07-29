@@ -3,3 +3,8 @@ language: java
 script:
  - ant;
  - ant test;
+
+sudo: required
+
+services:
+  - docker

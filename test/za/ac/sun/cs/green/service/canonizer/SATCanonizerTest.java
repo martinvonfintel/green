@@ -304,4 +304,14 @@ public class SATCanonizerTest {
 		check(o3, "(2<=2)&&(aa<2)", "1*v+-1<=0");
 	}
 
+		@Test
+	public void test21() {
+		IntConstant c1 = new IntConstant(2);
+		IntVariable v1 = new IntVariable("aa", 0, 99);
+		Operation o1 = new Operation(Operation.Operator.LE, c1, c1);
+		Operation o2 = new Operation(Operation.Operator.LT, v1, c1);
+		Operation o3 = new Operation(Operation.Operator.AND, o1, o2);
+		check(o3, "(2<=2)&&(aa<2)", "1*v+-1<0");
+	}
+
 }

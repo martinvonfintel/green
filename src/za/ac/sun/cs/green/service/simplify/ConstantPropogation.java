@@ -92,13 +92,13 @@ public class ConstantPropogation extends BasicService {
 			Operation.Operator op = operation.getOperator();
 
 			if (op.equals(Operation.Operator.EQ)) {
-				Expression opL = operation.getOperand(0);
-				Expression opR = operation.getOperand(1);
+				Expression opLeft = operation.getOperand(0);
+				Expression opRight = operation.getOperand(1);
 
-				if ((opL instanceof IntConstant) && (opR instanceof IntVariable)) {
-					map.put((IntVariable) opR, (IntConstant) opL);
-				} else if ((opL instanceof IntVariable) && (opR instanceof IntConstant)) {
-					map.put((IntVariable) opL, (IntConstant) opR);
+				if ((opLeft instanceof IntConstant) && (opRight instanceof IntVariable)) {
+					map.put((IntVariable) opRight, (IntConstant) opLeft);
+				} else if ((opLeft instanceof IntVariable) && (opRight instanceof IntConstant)) {
+					map.put((IntVariable) opLeft, (IntConstant) opRight);
 				}
 			}
 		}
@@ -122,16 +122,12 @@ public class ConstantPropogation extends BasicService {
 				Expression left = stack.pop();
 
 				if (!op.equals(Operation.Operator.EQ)) {
-					if (left instanceof IntVariable) {
-						if (map.containsKey(left)) {
-							left = map.get(left);
-						}
+					if (left instanceof IntVariable && map.containsKey(left)) {
+						left = map.get(left);
 					}
 
-					if (right instanceof IntVariable) {
-						if (map.containsKey(right)) {
-							right = map.get(right);
-						}
+					if (right instanceof IntVariable && map.containsKey(right)) {
+						right = map.get(right);
 					}
 				}
 

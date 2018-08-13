@@ -20,7 +20,7 @@ RUN git clone https://github.com/martinvonfintel/green
 # Checkout the constant propagation branch
 WORKDIR /green
 RUN git fetch
-RUN git checkout <branchname>
+RUN git checkout master
 WORKDIR /
 
 # Download and extract Z3

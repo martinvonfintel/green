@@ -36,9 +36,9 @@ public class ConstantPropogation extends BasicService {
 	public Set<Instance> processRequest(Instance instance) {
 		@SuppressWarnings("unchecked")
 		Set<Instance> result = (Set<Instance>) instance.getData(getClass());
-        
+
 		if (result == null) {
-			final Expression e = simplify(instance.getFullExpression());
+			final Expression e = constProp(instance.getFullExpression());
 			final Instance i = new Instance(getSolver(), instance.getSource(), null, e);
 			result = Collections.singleton(i);
 			instance.setData(getClass(), result);
@@ -52,25 +52,25 @@ public class ConstantPropogation extends BasicService {
 		reporter.report(getClass().getSimpleName(), "invocations = " + invocations);
 	}
 
-	public Expression simplify(Expression expression) {
+	public Expression constProp(Expression expression) {
         // Expression expression = null;
         invocations++;
 
         try {
-			log.log(Level.FINEST, "Before Simplification: " + expression);
+			log.log(Level.FINEST, "Before Const Prop: " + expression);
 			PropVisitor propVisitor = new PropVisitor();
 			expression.accept(propVisitor);
 			expression = propVisitor.getExpression();
 			// CanonizationVisitor canonizationVisitor = new CanonizationVisitor();
 			// expression.accept(canonizationVisitor);
 			expression = propVisitor.getExpression();
-            log.log(Level.FINEST, "After Simplification: " + expression);
+            log.log(Level.FINEST, "After Const Prop: " + expression);
 
 			return expression;
 
 		} catch (VisitorException x) {
 			log.log(Level.SEVERE,
-					"encountered an exception -- this should not be happening!",
+					"encountered an exception - this should not be happening!",
 					x);
 		}
 

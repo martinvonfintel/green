@@ -54,27 +54,23 @@ public class ConstantPropogation extends BasicService {
 
 	public Expression constProp(Expression expression) {
         // Expression expression = null;
-        invocations++;
 
         try {
+            invocations++;
 			log.log(Level.FINEST, "Before Const Prop: " + expression);
 			PropVisitor propVisitor = new PropVisitor();
 			expression.accept(propVisitor);
 			expression = propVisitor.getExpression();
-			// CanonizationVisitor canonizationVisitor = new CanonizationVisitor();
-			// expression.accept(canonizationVisitor);
-			expression = propVisitor.getExpression();
-            log.log(Level.FINEST, "After Const Prop: " + expression);
+			log.log(Level.FINEST, "After Const Prop: " + expression);
 
 			return expression;
-
 		} catch (VisitorException x) {
 			log.log(Level.SEVERE,
 					"encountered an exception - this should not be happening!",
 					x);
 		}
 
-		return null;
+		return expression;
 	}
 
 	private static class PropVisitor extends Visitor {
@@ -97,7 +93,6 @@ public class ConstantPropogation extends BasicService {
 			if (op.equals(Operation.Operator.EQ)) {
 				Expression opL = operation.getOperand(0);
 				Expression opR = operation.getOperand(1);
-                // log.log(Level.FINEST, opL + " " + op + " " + opR);
 
 				if ((opL instanceof IntConstant) && (opR instanceof IntVariable)) {
 					map.put((IntVariable) opR, (IntConstant) opL);
@@ -123,9 +118,7 @@ public class ConstantPropogation extends BasicService {
 
 			if (stack.size() >= 2) {
                 Expression right = stack.pop();
-                //log.log(Level.FINEST, "Pop Right: "+right);
 				Expression left = stack.pop();
-                //log.log(Level.FINEST, "Pop Left: "+left);
 
 				if (!op.equals(Operation.Operator.EQ)) {
 					if (left instanceof IntVariable) {

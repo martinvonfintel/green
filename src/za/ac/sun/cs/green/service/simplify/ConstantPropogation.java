@@ -26,6 +26,9 @@ import za.ac.sun.cs.green.expr.VisitorException;
 
 public class ConstantPropogation extends BasicService {
 
+    /**
+     * Number of times the slicer has been invoked.
+     */
 	private int invocations = 0;
 
 	public ConstantPropogation(Green solver) {
@@ -53,15 +56,13 @@ public class ConstantPropogation extends BasicService {
 	}
 
 	public Expression constProp(Expression expression) {
-        // Expression expression = null;
-
         try {
             invocations++;
-			log.log(Level.FINEST, "Before Const Prop: " + expression);
+			log.log(Level.FINEST, "Before ConstProp: " + expression);
 			PropVisitor propVisitor = new PropVisitor();
 			expression.accept(propVisitor);
 			expression = propVisitor.getExpression();
-			log.log(Level.FINEST, "After Const Prop: " + expression);
+			log.log(Level.FINEST, "After ConstProp: " + expression);
 
 			return expression;
 		} catch (VisitorException x) {
